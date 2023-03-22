@@ -1,13 +1,19 @@
 import React from 'react'
+import Song from './Song';
 
-function SongList() {
+function SongList({ allSongs, onAddToSetlist , onSongClick, onDelete}) {
 
-    return(
+    const individualSong = allSongs.map(song => (
+        <Song key={song.id} songInfo={song} onSongClick={onSongClick} onDelete={onDelete}/>
+    ))
+
+
+    return (
         <>
-        <h2>Song List</h2>
-        <div className="song-list">
-            {/** Songs go here... */}
-        </div>
+            <h2>Song List</h2>
+            <div className="song-list">
+                {individualSong}
+            </div>
         </>
     );
 }
