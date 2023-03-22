@@ -18,19 +18,24 @@ function SetlistBuilder() {
     }, [])
 
     const handleAddToPlaylist = (songInfo) => {
+
+
         if (songInfo.inPlaylist === true) {
             alert('Already in Setlist')
         }
         else {
             const isInPlaylist = allSongs.map(song => {
                 if (song.id === songInfo.id) {
-            return       {...song, inPlaylist: true} 
+                    return { ...song, inPlaylist: true }
                 } else { return song }
             })
             setSAllSongs(isInPlaylist)
+     
+            //replaced 2 lines by using "concat"
+            // const playlist = [...playlistSongs, songInfo]
+            // setPlaylistSongs(playlist)        
+            setPlaylistSongs(playlistSongs.concat(songInfo))
 
-            const playlist = [...playlistSongs, songInfo]
-            setPlaylistSongs(playlist)
         }
     }
 
