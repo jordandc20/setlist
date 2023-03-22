@@ -17,36 +17,33 @@ function SetlistBuilder() {
             })
     }, [])
 
+    const status = (songInfo) => {
+        const playlistStatus = allSongs.map(song => {
+            if (song.id === songInfo.id) {
+                return { ...song, inPlaylist: !song.inPlaylist }
+            } else { return song }
+        })
+        setSAllSongs(playlistStatus)
+    }
+
     const handleAddToPlaylist = (songInfo) => {
         if (songInfo.inPlaylist === true) {
             alert('Already in Setlist')
         }
         else {
-            const isInPlaylist = allSongs.map(song => {
-                if (song.id === songInfo.id) {
-                    return { ...song, inPlaylist: true }
-                } else { return song }
-            })
-            setSAllSongs(isInPlaylist)
-
-            const playlist = [...playlistSongs, songInfo]
-            setPlaylistSongs(playlist)
+            status(songInfo)
+            setPlaylistSongs(playlistSongs.concat(songInfo))
         }
     }
 
     const handleRemoveFromPlaylist = (songInfo) => {
         const updatedPlaylist = playlistSongs.filter(song => song.id !== songInfo.id)
         setPlaylistSongs(updatedPlaylist)
+        status(songInfo)
 
-        const udStatus = allSongs.map(song => {
-            if (song.id === songInfo.id) {
-                return { ...song, inPlaylist: false }
-            } else { return song }
-        })
-        setSAllSongs(udStatus)
     }
 
-    const handleDelete = (songInfo) => {
+    const handleSongDelete = (songInfo) => {
         fetch(API + '/' + songInfo.id, { method: 'DELETE' })
             .then(resp => resp.json())
             .then(() => {
@@ -56,10 +53,9 @@ function SetlistBuilder() {
             )
     }
 
-
     return (
         <div className="builder">
-            <SongList allSongs={allSongs} onSongClick={handleAddToPlaylist} onDelete={handleDelete} />
+            <SongList allSongs={allSongs} onSongClick={handleAddToPlaylist} onDelete={handleSongDelete} />
             <div className="vl"></div>
             <Setlist playlistSongs={playlistSongs} onSongClick={handleRemoveFromPlaylist} onDelete={handleRemoveFromPlaylist} />
         </div>
