@@ -24,7 +24,7 @@ function SetlistBuilder() {
         else {
             const isInPlaylist = allSongs.map(song => {
                 if (song.id === songInfo.id) {
-            return       {...song, inPlaylist: true} 
+                    return { ...song, inPlaylist: true }
                 } else { return song }
             })
             setSAllSongs(isInPlaylist)
@@ -38,12 +38,12 @@ function SetlistBuilder() {
         const updatedPlaylist = playlistSongs.filter(song => song.id !== songInfo.id)
         setPlaylistSongs(updatedPlaylist)
 
-        const xxx = allSongs.map(song => {
+        const udStatus = allSongs.map(song => {
             if (song.id === songInfo.id) {
                 return { ...song, inPlaylist: false }
             } else { return song }
         })
-        setSAllSongs(xxx)
+        setSAllSongs(udStatus)
     }
 
     const handleDelete = (songInfo) => {
