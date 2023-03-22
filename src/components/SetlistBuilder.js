@@ -12,26 +12,15 @@ function SetlistBuilder() {
         fetch(API)
             .then(resp => resp.json())
             .then(data => {
-                const addPlaylistStatus = data.map(song => ({ ...song, inPlaylist: false }))
-                setSAllSongs(addPlaylistStatus)
+                setSAllSongs(data)
             })
     }, [])
 
-    const status = (songInfo) => {
-        const playlistStatus = allSongs.map(song => {
-            if (song.id === songInfo.id) {
-                return { ...song, inPlaylist: !song.inPlaylist }
-            } else { return song }
-        })
-        setSAllSongs(playlistStatus)
-    }
-
     const handleAddToPlaylist = (songInfo) => {
-        if (songInfo.inPlaylist === true) {
+        if (playlistSongs.includes(songInfo)) {
             alert('Already in Setlist')
         }
         else {
-            status(songInfo)
             setPlaylistSongs(playlistSongs.concat(songInfo))
         }
     }
@@ -39,7 +28,6 @@ function SetlistBuilder() {
     const handleRemoveFromPlaylist = (songInfo) => {
         const updatedPlaylist = playlistSongs.filter(song => song.id !== songInfo.id)
         setPlaylistSongs(updatedPlaylist)
-        status(songInfo)
 
     }
 
@@ -49,6 +37,7 @@ function SetlistBuilder() {
             .then(() => {
                 const udSongList = allSongs.filter(song => song.id !== songInfo.id)
                 setSAllSongs(udSongList)
+                handleRemoveFromPlaylist(songInfo)
             }
             )
     }
